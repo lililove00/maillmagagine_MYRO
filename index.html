@@ -1,0 +1,449 @@
+<title>MYROメルマガ運用ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a sticky contents rail on the left, one reading column on the right; the newsletter's own olive palette is the page's identity. */
+:root{
+  --bg:#F1F2EC;
+  --surface:#FFFFFF;
+  --surface-2:#E7E9DD;
+  --ink:#23251C;
+  --ink-soft:#4A4D3E;
+  --muted:#767A65;
+  --line:#D6D9C7;
+  --olive:#5F644C;
+  --olive-strong:#3F4234;
+  --tint:#E2E5D3;
+  --alert:#8A2B2B;
+  --alert-tint:#F3E6E3;
+  --line-green:#06C755;
+  --code-bg:#F7F8F2;
+  --font-display:'Shippori Mincho','Hiragino Mincho ProN','Yu Mincho',Georgia,serif;
+  --font-body:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#181A13; --surface:#21241B; --surface-2:#2A2E22; --ink:#E7E9DE; --ink-soft:#C2C5B3; --muted:#8E927C;
+    --line:#363A2B; --olive:#B5BA97; --olive-strong:#D3D7BC; --tint:#2C3023; --alert:#D58374; --alert-tint:#33231F;
+    --code-bg:#1D2017; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#181A13; --surface:#21241B; --surface-2:#2A2E22; --ink:#E7E9DE; --ink-soft:#C2C5B3; --muted:#8E927C;
+  --line:#363A2B; --olive:#B5BA97; --olive-strong:#D3D7BC; --tint:#2C3023; --alert:#D58374; --alert-tint:#33231F;
+  --code-bg:#1D2017; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.85;padding:0 20px;-webkit-font-smoothing:antialiased}
+a{color:var(--olive-strong);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--code-bg);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;word-break:break-all}
+pre{margin:0;background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto}
+pre code{background:none;border:0;padding:0;font-size:12.5px;line-height:1.7;word-break:normal;white-space:pre}
+
+.shell{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;padding-block:56px 96px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr);gap:24px;padding-block:32px 72px}}
+
+/* contents rail */
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;font-size:13px}
+.rail .brand{font-family:var(--font-display);font-size:20px;letter-spacing:.32em;color:var(--ink);margin-bottom:22px}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:toc}
+.rail li{counter-increment:toc}
+.rail a{display:flex;gap:10px;padding:5px 8px;border-radius:4px;color:var(--ink-soft);text-decoration:none}
+.rail a::before{content:counter(toc,decimal-leading-zero);font-family:var(--font-mono);font-size:11px;color:var(--muted);padding-top:2px}
+.rail a:hover{background:var(--surface-2);color:var(--ink)}
+@media (max-width:900px){
+  .rail{position:static;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+  .rail .brand{margin-bottom:10px;font-size:17px}
+  .rail ol{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+
+main{min-width:0;max-width:780px}
+header.top{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:8px}
+.eyebrow{font-size:11px;letter-spacing:.28em;color:var(--olive);font-weight:500;margin:0 0 12px}
+h1{font-family:var(--font-display);font-weight:600;font-size:34px;word-break:keep-all;line-height:1.35;margin:0 0 14px;text-wrap:balance}
+.lead{color:var(--ink-soft);margin:0;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font-size:12.5px;color:var(--muted)}
+.meta b{color:var(--ink-soft);font-weight:500}
+
+section{padding-top:56px;scroll-margin-top:16px}
+h2{font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1.45;margin:0 0 6px;display:flex;align-items:baseline;gap:14px;text-wrap:balance}
+h2 .n{font-family:var(--font-mono);font-size:13px;color:var(--muted);font-weight:400}
+.point{color:var(--ink-soft);margin:6px 0 22px;max-width:64ch}
+h3{font-size:15.5px;font-weight:700;margin:32px 0 12px;color:var(--ink)}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px;padding-left:1.4em}
+li{margin-bottom:6px}
+li::marker{color:var(--muted)}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin:0 0 16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.7}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+th{font-size:12px;font-weight:500;color:var(--muted);background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.time{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+
+.note{border-left:3px solid var(--olive);background:var(--tint);padding:14px 18px;border-radius:0 6px 6px 0;margin:0 0 16px;font-size:14px}
+.note.alert{border-color:var(--alert);background:var(--alert-tint)}
+.note b{color:var(--ink)}
+
+/* samples */
+.samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+@media (max-width:640px){.samples{grid-template-columns:minmax(0,1fr)}}
+.sample{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.sample .head{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
+.sample .tag{font-size:11px;letter-spacing:.14em;color:var(--olive);font-weight:500}
+.sample .name{font-weight:700;font-size:14.5px;margin-top:2px}
+.sample .desc{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.65}
+.sample .file{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all}
+.sample .frame{height:520px;overflow-y:auto;background:#A4A88F;overscroll-behavior:contain}
+.sample .frame img{display:block;width:100%;height:auto}
+.sample .hint{font-size:11.5px;color:var(--muted);padding:8px 16px;border-top:1px solid var(--line)}
+.mobile-shot{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;margin-top:22px}
+.mobile-shot .phone{width:220px;max-width:100%;border:8px solid var(--ink);border-radius:26px;overflow:hidden;background:#A4A88F;flex:none}
+.mobile-shot .phone img{display:block;width:100%}
+.mobile-shot p{flex:1 1 240px;min-width:0;color:var(--ink-soft);font-size:14px}
+
+/* flow */
+.flow{list-style:none;padding:0;margin:0 0 8px;display:grid;gap:10px;counter-reset:fl}
+.flow li{counter-increment:fl;display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0}
+.flow li::before{content:counter(fl);font-family:var(--font-display);font-size:26px;line-height:1.1;color:var(--olive)}
+.flow .who{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.06em;padding:1px 9px;border-radius:999px;margin-left:8px;vertical-align:2px}
+.who.owner{background:var(--tint);color:var(--olive-strong)}
+.who.sys{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line)}
+.flow .t{font-weight:700}
+.flow .d{font-size:13.5px;color:var(--ink-soft);margin-top:2px}
+
+/* colours */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:12px}
+.sw{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.sw .chip{height:52px;border-bottom:1px solid var(--line)}
+.sw .i{padding:9px 12px 11px}
+.sw .hex{font-family:var(--font-mono);font-size:12px;color:var(--ink)}
+.sw .u{font-size:12px;color:var(--ink-soft);line-height:1.6;margin-top:2px}
+
+/* checklist */
+.check{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 18px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}
+.check label:last-child{border-bottom:0}
+.check input{margin-top:5px;accent-color:var(--olive);flex:none;width:16px;height:16px}
+.check-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px;font-size:13px;color:var(--muted)}
+.check-bar button{font:inherit;font-size:12.5px;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 12px;cursor:pointer}
+.check-bar button:hover{background:var(--surface-2)}
+
+footer.end{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="shell">
+  <nav class="rail" aria-label="目次">
+    <div class="brand">MYRO</div>
+    <ol>
+      <li><a href="#about">この資料について</a></li>
+      <li><a href="#samples">メルマガのサンプル</a></li>
+      <li><a href="#schedule">配信スケジュール</a></li>
+      <li><a href="#howto">作り方</a></li>
+      <li><a href="#tech">Shopify Email の技術要件</a></li>
+      <li><a href="#design">デザイン</a></li>
+      <li><a href="#copy">文面のルール</a></li>
+      <li><a href="#checklist">配信前チェックリスト</a></li>
+      <li><a href="#files">ファイル一覧</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="top">
+      <p class="eyebrow">NEWSLETTER OPERATIONS</p>
+      <h1>MYROメルマガ<wbr>運用ガイド</h1>
+      <p class="lead">MYROのメルマガは、Shopify Email の「独自コード」に手書きのHTMLを貼り付けて配信しています。このガイドは、その作り方・デザイン・配信時期と、これまでに実際に起きたエラーと回避策をまとめたものです。</p>
+      <div class="meta"><span><b>対象</b>　MYROチームのシステム担当</span><span><b>更新</b>　2026年10月7日</span></div>
+    </header>
+
+    <section id="about">
+      <h2><span class="n">01</span>この資料について</h2>
+      <ul>
+        <li><b>配信ツール</b>：Shopify 管理画面 →「Messaging（Shopify Email）」→ メッセージを作成 → テンプレート選択で「独自コード」→ HTMLを貼り付け</li>
+        <li><b>制作ファイルの保管場所</b>：<code>Desktop/myro_claude/メルマガ/</code>（1通＝1ファイルのHTML）</li>
+        <li><b>元になった実配信</b>：2026年9月の販売会②（4通）と、10月4日の No Measure Line（3通）</li>
+        <li><b>前提</b>：配信は販売会ごと。商品・会期・在庫は毎回 Shopify から取り直す</li>
+      </ul>
+    </section>
+
+    <section id="samples">
+      <h2><span class="n">02</span>メルマガのサンプル</h2>
+      <p class="point">実際に配信したHTMLを、パソコン幅（600px）で画像にしたものです。枠の中をスクロールすると全体が見られます。配信停止リンクだけは、本番で Shopify が差し込む箇所を仮の文字にしています。</p>
+      <div class="samples">
+        <article class="sample">
+          <div class="head">
+            <div class="tag">通常の販売会・前日 19:00</div>
+            <div class="name">前日告知</div>
+            <div class="desc">新作の紹介、全ラインナップ、購入方法、FAQまで入った、いちばん情報量の多い型。</div>
+            <div class="file">9月販売会②_前日告知_メルマガ.html</div>
+          </div>
+          <div class="frame" tabindex="0" aria-label="前日告知のサンプル（スクロールできます）"><img src="images/s1_zenjitsu.jpg" alt="前日告知メルマガの全体" loading="lazy"></div>
+          <div class="hint">高さ 6,416px</div>
+        </article>
+        <article class="sample">
+          <div class="head">
+            <div class="tag">特別回・4日前</div>
+            <div class="name">告知（公式LINE誘導）</div>
+            <div class="desc">新ラインの説明と、公式LINE登録への誘導が主目的の型。過去作の濃い帯もここで使用。</div>
+            <div class="file">10月販売会_NoMeasureLine_告知_メルマガ.html</div>
+          </div>
+          <div class="frame" tabindex="0" aria-label="告知のサンプル（スクロールできます）"><img src="images/s2_kokuchi.jpg" alt="告知メルマガの全体" loading="lazy"></div>
+          <div class="hint">高さ 5,078px</div>
+        </article>
+        <article class="sample">
+          <div class="head">
+            <div class="tag">特別回・当日 18:00</div>
+            <div class="name">ラインナップ公開</div>
+            <div class="desc">1デザインにつき大きな写真1枚＋小さな写真2枚で並べる型。</div>
+            <div class="file">10月販売会_NoMeasureLine_ラインナップ公開_メルマガ.html</div>
+          </div>
+          <div class="frame" tabindex="0" aria-label="ラインナップ公開のサンプル（スクロールできます）"><img src="images/s3_lineup.jpg" alt="ラインナップ公開メルマガの全体" loading="lazy"></div>
+          <div class="hint">高さ 7,252px</div>
+        </article>
+        <article class="sample">
+          <div class="head">
+            <div class="tag">特別回・開始直後</div>
+            <div class="name">オープン（完売・受付中の表示）</div>
+            <div class="desc">ボタンを最上部に置き、商品ごとに「SOLD OUT」「ご注文受付中」の帯を付けた型。</div>
+            <div class="file">10月販売会_NoMeasureLine_オープン_メルマガ.html</div>
+          </div>
+          <div class="frame" tabindex="0" aria-label="オープンのサンプル（スクロールできます）"><img src="images/s4_open.jpg" alt="オープンメルマガの全体" loading="lazy"></div>
+          <div class="hint">高さ 3,219px</div>
+        </article>
+      </div>
+      <div class="mobile-shot">
+        <div class="phone"><img src="images/s5_mobile.png" alt="オープンメルマガをスマホ幅375pxで表示した冒頭部分"></div>
+        <p><b>スマホでの見え方。</b>オープンの冒頭を375px幅で表示したものです。左右の余白は40pxから22pxに狭まり、「NOW OPEN」の見出しは1行に収まります。配信前は毎回この幅で確認します。</p>
+      </div>
+    </section>
+
+    <section id="schedule">
+      <h2><span class="n">03</span>配信スケジュール</h2>
+      <p class="point">通常の販売会は1回につき4通を配信します。販売会は土曜21:00開始、翌日23:59終了が基本です。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>配信タイミング</th><th>役割</th><th>主な中身</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="time">開催の約1週間前</td><td>告知</td><td>開催日時、新作の紹介（全貌はInstagram）、購入方法、よくある質問</td></tr>
+          <tr><td>2</td><td class="time">前日 19:00</td><td>前日告知</td><td>全ラインナップ、購入方法、FAQ。<b>この時点で商品ページを公開</b>し、購入方法の確認を促す</td></tr>
+          <tr><td>3</td><td class="time">当日 12:00</td><td>当日告知</td><td>「今夜21時」、ラインナップ一覧、アラーム・ログインなどオープン前の準備</td></tr>
+          <tr><td>4</td><td class="time">開始の5分後（21:05頃）</td><td>オープン</td><td>NOW OPEN、来店へのお礼、ラインナップ、売り切れ次第終了</td></tr>
+        </tbody>
+      </table></div>
+      <p>特別回は上の形を崩して使います。No Measure Line（2026年10月4日、19:00〜23:59）は次の3通でした。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>配信タイミング</th><th>役割</th><th>主な中身</th></tr></thead>
+        <tbody>
+          <tr><td class="time">4日前</td><td>告知</td><td>新ラインの説明、過去作（完売）、<b>公式LINE登録への誘導が主目的</b></td></tr>
+          <tr><td class="time">当日 18:00</td><td>ラインナップ公開</td><td>商品ページ公開の案内、1デザインにつき写真3枚</td></tr>
+          <tr><td class="time">当日 19:05〜19:30</td><td>オープン</td><td>開始直後の在庫を Shopify で確認し、商品ごとに「SOLD OUT」「ご注文受付中」を表示。来店人数など実数字も入れる</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note alert"><b>注意</b>　商品ページは販売期間外は非公開で、URLは404になります（商品タグ <code>販売開始_YYYYMMDD_HHMM</code> / <code>販売期限_YYYYMMDD_HHMM</code> で公開期間を制御）。商品リンクを載せる回は、配信前に公開されているか必ず確認してください。</div>
+      <div class="note"><b>配信時期と内容は固定ではありません。</b>上の表は2026年9〜10月の実績です。過去の配信データ（開封率・クリック率・コンバージョン率など）を Shopify の配信レポートで見ながら、内容や配信タイミングを変えてください。</div>
+    </section>
+
+    <section id="howto">
+      <h2><span class="n">04</span>作り方</h2>
+      <p class="point">配信は、オーナーとシステム担当の間で次の5段階で進めます。オーナーのOKとテスト配信の確認が済むまで、配信予約はしません。</p>
+      <h3>配信までの流れ</h3>
+      <ol class="flow">
+        <li><div><span class="t">内容をまとめる</span><span class="who owner">オーナー</span><div class="d">送りたいメルマガの内容をまとめて、システム担当に送る</div></div></li>
+        <li><div><span class="t">デザインを作る</span><span class="who sys">システム担当</span><div class="d">下の「デザイン作成の手順」でHTMLを作る</div></div></li>
+        <li><div><span class="t">チェックを受ける</span><span class="who owner">オーナー</span><div class="d">完成したデザインを見せて、OKをもらう。修正があれば2に戻る</div></div></li>
+        <li><div><span class="t">テスト配信</span><span class="who sys">システム担当</span><div class="d">自分宛てに送り、URLが生きているか、画像がちゃんと表示されるかを確認する</div></div></li>
+        <li><div><span class="t">配信を予約する</span><span class="who sys">システム担当</span><div class="d">Shopify Email で配信日時を予約する</div></div></li>
+      </ol>
+
+      <h3>デザイン作成の手順</h3>
+      <p>上のステップ2の中身です。忘れやすいのは1の商品登録の確認と、4・5のチェックです。</p>
+      <ol>
+        <li><b>商品データを取る</b>：Shopifyで販売開始タグ（例：<code>販売開始_20261004_1900</code>）で絞り込み、デザイン名・ハンドル（URL）・画像URL・在庫を揃える。会期・サイズ締切・発送日は商品説明文のスケジュール欄が正。<b>商品や画像がShopifyに登録されていない場合は、作業を止めてオーナーに連絡する</b></li>
+        <li><b>ベースを選ぶ</b>：同じ型の過去配信を複製する（「ファイル一覧」参照）。10月分は Node スクリプト <code>メルマガ/_tools/build_nm_mails.js</code> で生成しており、商品配列を書き換えて <code>node build_nm_mails.js</code> で再生成できる（出力先は絶対パスなので環境に合わせて変更）</li>
+        <li><b>文面と画像を入れる</b>：画像は商品登録の <code>cdn.shopify.com</code> URL。重い写真は <code>&amp;amp;width=800</code> を付けて縮小（次の章）</li>
+        <li><b>スマホ幅で見る</b>：375px幅で表示し、見出しの折り返し、1文字だけの行（「た.」「す.」）、英字ラベルの途中改行を直す。ヘッドレスChromeなら <code>chrome.exe --headless=new --window-size=375,1000 --screenshot=...</code> で確認できる</li>
+        <li><b>配信前チェック</b>：このガイドのチェックリストをすべて通す（特に <code>{{ unsubscribe_link }}</code> と <code>&amp;amp;</code>）</li>
+        <li><b>Shopifyに貼る</b>：「独自コード」にHTMLを貼り、件名を入力。保存時にエラーが出たら行番号を見て次の章の事例と照らす</li>
+        <li><b>テスト送信</b>：自分宛てに送り、スマホ実機でリンクを押して確認する。編集画面のプレビューではリンクが動かないことが多い</li>
+      </ol>
+      <p>オープン直後の配信は、送信の直前にもう一度在庫を確認します。完売・受付中の表示や、「○時○分に完売」「○人が来店」といった数字が、送信時点の事実と合っている必要があるためです。</p>
+    </section>
+
+    <section id="tech">
+      <h2><span class="n">05</span>Shopify Email の技術要件</h2>
+      <p class="point">保存エラーを出さないための必須ルールは4つです。いずれも実際にエラーや表示崩れを起こしたものです。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>ルール</th><th>書き方</th><th>守らないと</th></tr></thead>
+        <tbody>
+          <tr><td><b>配信停止リンク</b></td><td><code>{{ unsubscribe_link }}</code> を単体で置く。この変数は <code>&lt;a&gt;</code> タグごと出力されるので、色は <code>&lt;style&gt;</code> の <code>.unsub a{…!important}</code> で当てる</td><td>無い＝保存エラー。href の中に入れる＝<code>style="color:..."</code> が文字で見えてリンクも壊れる</td></tr>
+          <tr><td><b>開封計測</b></td><td><code>&lt;/body&gt;</code> の直前に <code>{{ open_tracking_block }}</code> を1行</td><td>無い＝保存エラー</td></tr>
+          <tr><td><b>URLの &amp;</b></td><td><code>&amp;amp;</code> と書く（例：<code>…jpg?v=1791021357&amp;amp;width=800</code>）</td><td>「N行目の構文が有効ではありません」が <code>&amp;</code> の数だけ出る</td></tr>
+          <tr><td><b>ボタン</b></td><td><code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;</code> の td に背景色と余白を持たせ、中に <code>&lt;a&gt;</code> を置く</td><td><code>&lt;a style="display:block"&gt;</code> 単体だとプレビューで右にずれる</td></tr>
+        </tbody>
+      </table></div>
+<pre><code>&lt;style&gt;
+  .unsub a{ color:#2B2B2B !important; font-size:12px !important; }
+&lt;/style&gt;
+…
+&lt;!-- ボタン --&gt;
+&lt;table width="100%" cellpadding="0" cellspacing="0" border="0"&gt;&lt;tr&gt;
+  &lt;td align="center" bgcolor="#333333" style="background-color:#333333; padding:24px 20px;"&gt;
+    &lt;a href="https://myronailtip.com" style="display:block; color:#FFFFFF;"&gt;オンラインストアへ&lt;/a&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;&lt;/table&gt;
+…
+&lt;!-- フッター --&gt;
+&lt;div class="unsub"&gt;{{ unsubscribe_link }}&lt;/div&gt;
+…
+{{ open_tracking_block }}
+&lt;/body&gt;</code></pre>
+
+      <h3>画像</h3>
+      <ul>
+        <li>画像は Shopify の商品登録で登録されているものを使う（<code>https://cdn.shopify.com/...</code> のURL）。<b>商品や画像が未登録の場合は、自分で用意せずオーナーに連絡する</b></li>
+        <li><code>data:image/...</code>（base64埋め込み）は多くのメールアプリで表示されない。配信前に <code>data:image</code> で検索して0件を確認</li>
+        <li>写真の元ファイルは 3024×4032・約1.5MB。<code>&amp;amp;width=800</code>（メインは1000、小さい写真は520）を付けるとJPGは70〜180KBになる。PNGは縮小しても約0.4MBで、形式変換は効かない</li>
+      </ul>
+      <h3>その他</h3>
+      <ul>
+        <li><b>プリヘッダー</b>（受信トレイで件名の下に出る文）は、本文先頭の <code>display:none</code> の div に書く。続きを拾わせないため、直後に空白文字の div を置く</li>
+        <li><b>日本語やローマ数字を含む商品ハンドル</b>はURLエンコードする（例：<code>design-ⅳ</code> → <code>design-%E2%85%B3</code>）</li>
+        <li><b>Outlook（Windows版）</b>はグラデーションや角丸を表示しない。崩れはしないが、単色・四角になる</li>
+        <li><b>フッター</b>には特定電子メール法のため、名称・住所・配信停止リンクを必ず入れる</li>
+      </ul>
+    </section>
+
+    <section id="design">
+      <h2><span class="n">06</span>デザイン</h2>
+      <p class="point">2026年9月以降は、Aesopのメルマガを参考にした「オリーブの全面背景・左寄せ」のデザインで統一しています。白いカードは使いません。それ以前のベージュ＋ゴールド版は<a href="https://claude.ai/code/artifact/b7a8ce38-3230-45f6-9ebc-5cccea8869b8" target="_blank" rel="noopener">旧制作ガイド</a>に残っています。</p>
+      <h3>カラー</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#A4A88F"></div><div class="i"><div class="hex">#A4A88F</div><div class="u">メール全体の背景</div></div></div>
+        <div class="sw"><div class="chip" style="background:#BCBFA5"></div><div class="i"><div class="hex">#BCBFA5</div><div class="u">下段バンド・公式LINEブロック・注意書きの面</div></div></div>
+        <div class="sw"><div class="chip" style="background:#2B2B2B"></div><div class="i"><div class="hex">#2B2B2B</div><div class="u">文字（見出し・本文）</div></div></div>
+        <div class="sw"><div class="chip" style="background:#3F4234"></div><div class="i"><div class="hex">#3F4234</div><div class="u">補足文</div></div></div>
+        <div class="sw"><div class="chip" style="background:#5C5F4C"></div><div class="i"><div class="hex">#5C5F4C</div><div class="u">ラベル・英字の小見出し</div></div></div>
+        <div class="sw"><div class="chip" style="background:linear-gradient(90deg,#6E7259 50%,#8E9377 50%)"></div><div class="i"><div class="hex">#6E7259 / #8E9377</div><div class="u">罫線（強め／弱め）</div></div></div>
+        <div class="sw"><div class="chip" style="background:#333333"></div><div class="i"><div class="hex">#333333</div><div class="u">ボタン・SOLD OUT帯・お知らせ枠（文字は白）</div></div></div>
+        <div class="sw"><div class="chip" style="background:#2F3326"></div><div class="i"><div class="hex">#2F3326</div><div class="u">過去作などの濃い帯（ラベルは #BFA878）</div></div></div>
+        <div class="sw"><div class="chip" style="background:#06C755"></div><div class="i"><div class="hex">#06C755</div><div class="u">公式LINEボタン専用</div></div></div>
+        <div class="sw"><div class="chip" style="background:#8A2B2B"></div><div class="i"><div class="hex">#8A2B2B</div><div class="u">注意書きの左線・警告</div></div></div>
+      </div>
+      <h3>文字</h3>
+      <ul>
+        <li>本文：<code>'Hiragino Sans','Yu Gothic',sans-serif</code>、15px、行間1.9</li>
+        <li>数字の見出し・引用・デザイン名：<code>'Hiragino Mincho ProN','Yu Mincho',Georgia,serif</code></li>
+        <li>英字の小見出し（<code>L I N E　U P</code> など）は11px・字間を広く。<b>大きな英字見出しは1文字ずつ空白を入れず</b>、<code>letter-spacing</code> と <code>white-space:nowrap</code> で組む（空白区切りはスマホで折れる）</li>
+        <li>スマホ用に <code>@media (max-width:480px)</code> で左右余白を40px→22pxにし、大見出しを縮小する</li>
+      </ul>
+      <h3>レイアウト</h3>
+      <p>最大幅600pxの table レイアウトで、上から次の順に並べます。</p>
+      <ol>
+        <li>ヘッダー：左に <code>MYRO</code>、右に <code>HANDMADE NAIL TIP</code>、下に細い罫線</li>
+        <li>ヒーロー：英字の小見出し（<code>TODAY 19:00</code> など）＋大きな見出し＋会期</li>
+        <li>メイン画像またはお知らせ枠</li>
+        <li>挨拶文（左寄せ）</li>
+        <li>番号つきセクション：明朝体の大きな「01」＋小さなラベル。ラインナップ、購入方法、FAQなど</li>
+        <li>黒ボタン（右端に矢印 →）</li>
+        <li>下段バンド：明朝体の引用 → SCHEDULE → 公式LINE案内 → リンク → 住所 → 配信停止</li>
+      </ol>
+      <h3>よく使うパーツ</h3>
+      <ul>
+        <li><b>ラインナップ</b>：告知・公開系は1デザインにつき写真3枚（大1＋小2）。当日・オープンは2列か3列のサムネイル</li>
+        <li><b>在庫の帯</b>：画像の下に黒帯「SOLD OUT」、または生成りの帯「ご注文受付中」</li>
+        <li><b>公式LINEブロック</b>：<code>#BCBFA5</code> の面に緑ボタン。LINEのURLは <code>https://l.omct.jp/2007662439-WwJ6neVX</code></li>
+        <li><b>注意書き</b>：左に赤線 <code>#8A2B2B</code> の囲み</li>
+      </ul>
+    </section>
+
+    <section id="copy">
+      <h2><span class="n">07</span>文面のルール</h2>
+      <p class="point">文末は句点「。」ではなく半角ピリオド「.」で統一し、価格は載せません。</p>
+      <ul>
+        <li>挨拶は「こんばんは、MYROです.」（昼配信は「こんにちは」）</li>
+        <li>やわらかい敬語（〜いただけます／〜となります）。「！」も使わず「.」にする</li>
+        <li><b>価格は表示しない</b>。ラインナップはデザイン名と一行コピーまで。価格は商品ページで見てもらう</li>
+        <li><b>在庫数は書かない</b>。「数量限定」「売り切れ次第終了」の表現にとどめる。ただし「1点限定」「3点限定」などの数は、Instagramなどですでに公開している場合は書いてよい</li>
+        <li><b>無償のサイズお作り直しは1回のみ</b>（MYRO公式ストアでフィッティングチップを購入・計測した方が対象）。「回数制限なく」は誤り</li>
+        <li>煽りは事実ベースの言い切りで。「争奪戦」のような誇張は使わない。実際の数字（「19時10分に完売」「74人が来店」）は効果が高い</li>
+        <li>未確定の箇所は【　】で仮置きし、配信前に必ず消す</li>
+      </ul>
+      <h3>件名とプレビューテキスト</h3>
+      <ul>
+        <li><b>件名</b>は先頭を【　】にし、中に開けたくなるフックを入れる。スマホでは前半20文字ほどしか見えないので、日時と要点を前に置く</li>
+        <li><b>プレビューテキスト</b>は件名と重ならない補足を1文で。HTML先頭のプリヘッダーに書く</li>
+      </ul>
+      <div class="table-wrap"><table>
+        <thead><tr><th>配信</th><th>件名の例</th><th>プレビューテキストの例</th></tr></thead>
+        <tbody>
+          <tr><td>ラインナップ公開</td><td>【ひと足先に解禁】全4デザイン、今夜19時スタート</td><td>ラインナップを公開しました. 商品ページで色味や質感、画像をじっくりご覧いただけます.</td></tr>
+          <tr><td>オープン（一部完売）</td><td>【完売続出】19時10分に2デザインが完売｜残りは受付中です</td><td>design Ⅵ・Ⅶ は19時10分に完売しました. design Ⅳ・Ⅴ はご注文受付中です.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="checklist">
+      <h2><span class="n">08</span>配信前チェックリスト</h2>
+      <p class="point">送信ボタンを押す前に、HTMLを文字検索して次を確かめます。チェックはこのブラウザにだけ保存されます。</p>
+      <div class="check-bar"><span id="check-count">0 / 13</span><button type="button" id="check-reset">チェックをすべて外す</button></div>
+      <div class="check" id="check">
+        <label><input type="checkbox" id="c1"><span>使う商品がすべて Shopify に登録され、画像も登録済み（未登録ならオーナーに連絡）</span></label>
+        <label><input type="checkbox" id="c2"><span>オーナーにデザインを確認してもらい、OKをもらった</span></label>
+        <label><input type="checkbox" id="c3"><span><code>{{ unsubscribe_link }}</code> と <code>{{ open_tracking_block }}</code> が1つずつある</span></label>
+        <label><input type="checkbox" id="c4"><span>URLに裸の <code>&amp;</code> がない（<code>&amp;amp;</code> になっている）</span></label>
+        <label><input type="checkbox" id="c5"><span><code>data:image</code> が0件、画像はすべて商品登録の <code>cdn.shopify.com</code></span></label>
+        <label><input type="checkbox" id="c6"><span><code>¥</code> <code>円</code> が0件（価格を載せていない）</span></label>
+        <label><input type="checkbox" id="c7"><span><code>。</code> が0件、【　】の仮置きが残っていない</span></label>
+        <label><input type="checkbox" id="c8"><span>商品ページが公開中で、リンクが404にならない</span></label>
+        <label><input type="checkbox" id="c9"><span>会期・サイズ締切・発送日が商品ページと一致している</span></label>
+        <label><input type="checkbox" id="c10"><span>完売・受付中の表示、来店人数などの数字が送信時点の事実と合っている</span></label>
+        <label><input type="checkbox" id="c11"><span>375px幅で崩れがない（見出しが1行、孤立した1文字の行がない）</span></label>
+        <label><input type="checkbox" id="c12"><span>件名が【　】始まりで、プレビューテキストが件名と重複していない</span></label>
+        <label><input type="checkbox" id="c13"><span>テスト配信で、URLが生きていることと画像が表示されることをスマホ実機で確認した</span></label>
+      </div>
+    </section>
+
+    <section id="files">
+      <h2><span class="n">09</span>ファイル一覧</h2>
+      <p class="point">新しい配信は、同じ役割の過去ファイルを複製して作るのがいちばん早いです。すべて <code>Desktop/myro_claude/メルマガ/</code> にあります。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>ファイル</th><th>配信</th><th>役割</th><th>デザイン</th></tr></thead>
+        <tbody>
+          <tr><td>10月販売会_NoMeasureLine_オープン_メルマガ.html</td><td class="time">2026-10-04 19:05頃</td><td>オープン（完売・受付中の表示あり）</td><td>オリーブ</td></tr>
+          <tr><td>10月販売会_NoMeasureLine_ラインナップ公開_メルマガ.html</td><td class="time">2026-10-04 18:00</td><td>ラインナップ公開（写真3枚ずつ）</td><td>オリーブ</td></tr>
+          <tr><td>10月販売会_NoMeasureLine_告知_メルマガ.html</td><td class="time">2026-09-30頃</td><td>告知（公式LINE誘導）</td><td>オリーブ</td></tr>
+          <tr><td>9月販売会②_オープン_メルマガ.html</td><td class="time">2026-09-26 21:05</td><td>オープン</td><td>オリーブ</td></tr>
+          <tr><td>9月販売会②_当日告知_メルマガ.html</td><td class="time">2026-09-26 12:00</td><td>当日告知</td><td>オリーブ</td></tr>
+          <tr><td>9月販売会②_前日告知_メルマガ.html</td><td class="time">2026-09-25 19:00</td><td>前日告知（全ラインナップ・FAQ）</td><td>オリーブ</td></tr>
+          <tr><td>9月販売会②_SAVE THE DATE_メルマガ.html</td><td class="time">2026-09-21頃</td><td>告知</td><td>オリーブ</td></tr>
+          <tr><td>9月販売会①_本日21時オープン_メルマガ.html</td><td class="time">2026-09-12</td><td>当日告知</td><td>旧（ベージュ）</td></tr>
+          <tr><td>_tools/build_nm_mails.js</td><td>—</td><td>10月のラインナップ公開・オープンを生成するNodeスクリプト</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+      <p>9月販売会①のファイルは旧デザイン（ベージュの白カード）で、公式LINEのURLも【　】の仮置きのままです。ベースには使わないでください。</p>
+    </section>
+
+    <footer class="end">MYROメルマガ運用ガイド　／　2026年10月7日時点。新しい型やルールが増えたら、このガイドにも追記してください。</footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  var KEY='myro-newsletter-checklist';
+  var boxes=[].slice.call(document.querySelectorAll('#check input[type=checkbox]'));
+  var count=document.getElementById('check-count');
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+  function render(){ var n=boxes.filter(function(b){return b.checked;}).length; count.textContent=n+' / '+boxes.length; }
+  var state=load();
+  boxes.forEach(function(b){ b.checked=!!state[b.id]; b.addEventListener('change',function(){ state[b.id]=b.checked; save(state); render(); }); });
+  document.getElementById('check-reset').addEventListener('click',function(){ boxes.forEach(function(b){ b.checked=false; }); state={}; save(state); render(); });
+  render();
+})();
+</script>
